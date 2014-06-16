@@ -95,7 +95,7 @@ slip_input_callback(void)
 static void
 init(void)
 {
-  //slip_arch_init(BAUD2UBR(115200));  //baudrate is not defined here,so 115200 is useless
+  slip_arch_init(BAUD2UBR(38400));  //baudrate is not defined here,so 115200 is useless
   process_start(&slip_process, NULL);
   slip_set_input_callback(slip_input_callback);
 }
