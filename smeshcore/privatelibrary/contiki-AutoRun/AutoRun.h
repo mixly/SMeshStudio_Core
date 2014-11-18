@@ -84,8 +84,8 @@ public:
  * Defines a task to run automatically.
  */
 #define AutoTask(target)   \
-static void target(void);  \
-AutoRun(target);           \
-static void target(void)
+static void auto_##target(void);  \
+AutoRun(auto_##target);           \
+static void auto_##target(void)
 
 #endif /* _AUTO_RUN_H_ */
