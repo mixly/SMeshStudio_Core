@@ -20,24 +20,24 @@ extern "C" {
  * Represents a REST response.
  */
 class RestResponse {
+public:
+	/*
+	 * the actual outgoing response
+	 */
+	void* const response;
 private:
 	/*
 	 * the payload buffer
 	 */
 	uint8_t* const buffer;
 	/*
-	 * the length of payload
-	 */
-	size_t payloadLength;
-	/*
 	 * the offset for blockwise transfer
 	 */
 	int32_t *offset;
-public:
 	/*
-	 * the actual outgoing response
+	 * the length of payload
 	 */
-	void* const response;
+	size_t payloadLength;
 public:
 	/*
 	 * Instantiates.
