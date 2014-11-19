@@ -74,7 +74,10 @@ public:
 	 * \param autostart (optional) true if to be started automatically, otherwise false. The default value is true.
 	 */
 	PtTimer(PT_THREAD((*target)()), float interval, float delay = 0, const char *name = NULL, bool autostart = true);
-	/* virtual */ ~PtTimer();
+#if !CC_NO_VIRTUAL_DESTRUCTOR
+	virtual
+#endif
+	~PtTimer();
 protected:
 	PT_THREAD(run(struct pt *process_pt, process_event_t ev, process_data_t data));
 	/*

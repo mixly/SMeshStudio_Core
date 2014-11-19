@@ -25,6 +25,14 @@ extern "C" {
 #endif
 
 /*
+ * CC_NO_VIRTUAL_DESTRUCTOR specifies whether virtual destructors is disabled or not.
+ * Virtual destructors are disabled by default for NOT being supported in AVR GCC.
+ */
+#ifndef CC_NO_VIRTUAL_DESTRUCTOR
+#define CC_NO_VIRTUAL_DESTRUCTOR 1
+#endif
+
+/*
  * Wraps Contiki proto-thread process.
  */
 class PtProcess {
@@ -83,7 +91,10 @@ public:
 	 * \param autostart (optional) true if to be started automatically, otherwise false. The default value is true.
 	 */
 	PtProcess(PT_THREAD((*target)(struct pt*, process_event_t, process_data_t)), const char *name = NULL, bool autostart = true);
-	/* virtual */ ~PtProcess();
+#if !CC_NO_VIRTUAL_DESTRUCTOR
+	virtual
+#endif
+	~PtProcess();
 	/*
 	 * Starts this process.
 	 */

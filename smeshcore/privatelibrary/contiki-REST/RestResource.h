@@ -16,6 +16,14 @@ extern "C" {
 #include "rest-engine.h"
 }
 
+/*
+ * CC_NO_VIRTUAL_DESTRUCTOR specifies whether virtual destructors is disabled or not.
+ * Virtual destructors are disabled by default for NOT being supported in AVR GCC.
+ */
+#ifndef CC_NO_VIRTUAL_DESTRUCTOR
+#define CC_NO_VIRTUAL_DESTRUCTOR 1
+#endif
+
 #include "RestRequest.h"
 #include "RestResponse.h"
 
@@ -86,7 +94,10 @@ public:
 	RestResource(const char *url, const char *attributes,
 			restful_handler GET, restful_handler POST = NULL,
 			restful_handler PUT = NULL, restful_handler DELETE = NULL);
-	/* virtual */ ~RestResource();
+#if !CC_NO_VIRTUAL_DESTRUCTOR
+	virtual
+#endif
+	~RestResource();
 private:
 	/*
 	 * Initializes.
@@ -149,7 +160,10 @@ public:
 	EventResource(const char *url, const char *attributes,
 			restful_handler GET, restful_handler POST = NULL,
 			restful_handler PUT = NULL, restful_handler DELETE = NULL);
-	/* virtual */ ~EventResource();
+#if !CC_NO_VIRTUAL_DESTRUCTOR
+	virtual
+#endif
+	~EventResource();
 	/*
 	 * Notifies subscribers.
 	 */
@@ -200,7 +214,10 @@ public:
 			restful_handler GET, restful_handler POST = NULL,
 			restful_handler PUT = NULL, restful_handler DELETE = NULL,
 			RestPeriodicHandler OBS = NULL);
-	/* virtual */ ~PeriodicResource();
+#if !CC_NO_VIRTUAL_DESTRUCTOR
+	virtual
+#endif
+	~PeriodicResource();
 	/*
 	 * Sets the period of time in seconds.
 	 */
