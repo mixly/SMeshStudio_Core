@@ -9,6 +9,7 @@
  *      Author: Long
  */
 
+#include <stdarg.h>
 #include "RestResponse.h"
 
 RestResponse::RestResponse(void *response, uint8_t *buffer, int32_t *offset) :

@@ -9,6 +9,7 @@
  *      Author: Long
  */
 
+#include <stdarg.h>
 #include <string.h>
 #include "RestServer.h"
 
