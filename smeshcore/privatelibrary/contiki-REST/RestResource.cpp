@@ -174,6 +174,14 @@ void EventResource::notify(void) {
 }
 
 /*
+ * Factory function for making periodic_resource_t.
+ */
+static periodic_resource_t make_periodic_resource(restful_periodic_handler periodic_handler) {
+	periodic_resource_t pr = { NULL, NULL, 0, { { 0 } }, periodic_handler };
+	return pr;
+}
+
+/*
  * Instantiates a rest periodic resource.
  *
  * \param url the url of this resource
@@ -187,9 +195,9 @@ void EventResource::notify(void) {
 PeriodicResource::PeriodicResource(const char *url, float period,
 		const char *attributes, RestHandler GET, RestHandler POST,
 		RestHandler PUT, RestHandler DELETE, RestPeriodicHandler OBS) :
-		EventResource(url, attributes, GET, POST, PUT, DELETE) {
-	periodic_resource_t pr = { NULL, &resource, 0, { { 0 } }, OBS };
-	memcpy(&periodicResource, &pr, sizeof(periodic_resource_t));
+		EventResource(url, attributes, GET, POST, PUT, DELETE),
+		periodicResource(make_periodic_resource(OBS)) {
+	periodicResource.resource = &resource;
 	setPeriod(period);
 }
 
@@ -207,9 +215,9 @@ PeriodicResource::PeriodicResource(const char *url, float period,
 PeriodicResource::PeriodicResource(const char *url, float period,
 		const char *attributes, restful_handler GET, restful_handler POST,
 		restful_handler PUT, restful_handler DELETE, RestPeriodicHandler OBS) :
-		EventResource(url, attributes, GET, POST, PUT, DELETE) {
-	periodic_resource_t pr = { NULL, &resource, 0, { { 0 } }, OBS };
-	memcpy(&periodicResource, &pr, sizeof(periodic_resource_t));
+		EventResource(url, attributes, GET, POST, PUT, DELETE),
+		periodicResource(make_periodic_resource(OBS)) {
+	periodicResource.resource = &resource;
 	setPeriod(period);
 }
 
