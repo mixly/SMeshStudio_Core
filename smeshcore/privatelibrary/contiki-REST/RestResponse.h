@@ -86,19 +86,35 @@ public:
 	 */
 	size_t print(unsigned int u);
 	/*
+	 * Prints a long.
+	 *
+	 * \param l the long to print
+	 * \return the actual count of written bytes.
+	 */
+	size_t print(long l);
+	/*
+	 * Prints an unsigned long.
+	 *
+	 * \param u the unsigned long to print
+	 * \return the actual count of written bytes.
+	 */
+	size_t print(unsigned long u);
+	/*
 	 * Prints a float.
 	 *
 	 * \param f the float to print
+	 * \param digits the precision
 	 * \return the actual count of written bytes.
 	 */
-	size_t print(float f);
+	size_t print(float f, int digits = 2);
 	/*
 	 * Prints a double.
 	 *
 	 * \param d the double to print
+	 * \param digits the precision
 	 * \return the actual count of written bytes.
 	 */
-	size_t print(double d);
+	size_t print(double d, int digits = 2);
 	/*
 	 * Prints a formatted string.
 	 */
@@ -139,6 +155,10 @@ public:
 	int32_t getOffset();
 	void blockAppend(int32_t length);
 	void blockComplete();
+#if CONTIKI
+private:
+	size_t printFloat(double number, uint8_t digits);
+#endif
 };
 
 #endif /* _REST_RESPONSE_H_ */
