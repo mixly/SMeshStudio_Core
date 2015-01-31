@@ -52,55 +52,23 @@ size_t RestResponse::print(unsigned int u) {
 }
 
 /*
- * Prints a long.
- *
- * \param l the long to print
- * \return the actual count of written bytes.
- */
-size_t RestResponse::print(long l)
-{
-	return printf("%l", l);
-}
-
-/*
- * Prints an unsigned long.
- *
- * \param u the unsigned long to print
- * \return the actual count of written bytes.
- */
-size_t RestResponse::print(unsigned long u)
-{
-	return printf("%lu", u);
-}
-
-/*
  * Prints a float.
  *
  * \param f the float to print
- * \param digits the precision
  * \return the actual count of written bytes.
  */
-size_t RestResponse::print(float f, int digits) {
-#if CONTIKI
-	return printFloat(f, digits);
-#else
+size_t RestResponse::print(float f) {
 	return printf("%f", f);
-#endif
 }
 
 /*
  * Prints a double.
  *
  * \param d the double to print
- * \param digits the precision
  * \return the actual count of written bytes.
  */
-size_t RestResponse::print(double d, int digits) {
-#if CONTIKI
-	return printFloat(d, digits);
-#else
+size_t RestResponse::print(double d) {
 	return printf("%lf", d);
-#endif
 }
 
 /*
@@ -210,53 +178,3 @@ void RestResponse::blockAppend(int32_t length) {
 void RestResponse::blockComplete() {
 	*offset = -1;
 }
-
-#if CONTIKI
-#include <math.h>
-
-size_t RestResponse::printFloat(double number, uint8_t digits) {
-	size_t n = 0;
-
-	if (isnan(number))
-		return print("nan");
-	if (isinf(number))
-		return print("inf");
-	if (number > 4294967040.0)
-		return print("ovf");  // constant determined empirically
-	if (number < -4294967040.0)
-		return print("ovf");  // constant determined empirically
-
-	// Handle negative numbers
-	if (number < 0.0) {
-		n += print('-');
-		number = -number;
-	}
-
-	// Round correctly so that print(1.999, 2) prints as "2.00"
-	double rounding = 0.5;
-	for (uint8_t i = 0; i < digits; ++i)
-		rounding /= 10.0;
-
-	number += rounding;
-
-	// Extract the integer part of the number and print it
-	unsigned long int_part = (unsigned long) number;
-	double remainder = number - (double) int_part;
-	n += print(int_part);
-
-	// Print the decimal point, but only if there are digits beyond
-	if (digits > 0) {
-		n += print(".");
-	}
-
-	// Extract digits from the remainder one at a time
-	while (digits-- > 0) {
-		remainder *= 10.0;
-		int toPrint = int(remainder);
-		n += print(toPrint);
-		remainder -= toPrint;
-	}
-
-	return n;
-}
-#endif
